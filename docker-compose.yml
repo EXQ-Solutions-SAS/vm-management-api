@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: user_ifx
+      POSTGRES_PASSWORD: password_ifx
+      POSTGRES_DB: vms_db
+    ports:
+      - "5432:5432"

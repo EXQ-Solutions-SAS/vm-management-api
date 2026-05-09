@@ -1,0 +1,38 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  CLIENTE
+}
+
+enum VMStatus {
+  ENCENDIDA
+  APAGADA
+}
+
+model User {
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
+  role     Role   @default(CLIENTE) // El cliente solo ve, el admin gestiona
+}
+
+model VirtualMachine {
+  id        String   @id @default(uuid())
+  name      String
+  cores     Int      // Validación: no negativos 
+  ram       Int      // En GB
+  disk      Int      // En GB
+  os        String
+  status    VMStatus @default(APAGADA)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
