@@ -1,11 +1,29 @@
-version: '3.8'
 services:
   db:
-    image: postgres:15
+    image: postgres:15-alpine
+    container_name: ifx_postgres_db
     restart: always
     environment:
-      POSTGRES_USER: user_ifx
-      POSTGRES_PASSWORD: password_ifx
-      POSTGRES_DB: vms_db
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-admin123}
+      POSTGRES_DB: ${DB_NAME:-vms_db}
     ports:
-      - "5432:5432"
+      - "5432:5432" # Cambiado a 5432 por defecto para evitar confusiones
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: ifx_nestjs_api
+    environment:
+      - DATABASE_URL=postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-admin123}@db:5432/${DB_NAME:-vms_db}?schema=public
+      - JWT_SECRET=${JWT_SECRET:-SuperSecretIFX2024}
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
