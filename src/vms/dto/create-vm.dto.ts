@@ -1,27 +1,21 @@
-// src/vms/dto/create-vm.dto.ts
-import { IsString, IsInt, Min, IsEnum, IsNotEmpty } from 'class-validator';
-import { VMStatus } from '@prisma/client';
+import { IsString, IsInt, Min } from 'class-validator';
 
 export class CreateVmDto {
   @IsString()
-  @IsNotEmpty()
   name!: string;
 
   @IsInt()
-  @Min(1, { message: 'Cores debe ser al menos 1' })
-  cores!: number;
-
-  @IsInt()
-  @Min(1, { message: 'RAM no puede ser negativa o cero' })
-  ram!: number;
+  @Min(1)
+  cores!: number; // Coincide con Prisma
 
   @IsInt()
   @Min(1)
-  disk!: number;
+  ram!: number;   // Coincide con Prisma
+
+  @IsInt()
+  @Min(1)
+  disk!: number;  // Coincide con Prisma
 
   @IsString()
-  os!: string;
-
-  @IsEnum(VMStatus)
-  status!: VMStatus;
+  os!: string;    // Obligatorio en Prisma
 }
