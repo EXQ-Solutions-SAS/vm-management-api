@@ -4,26 +4,34 @@ services:
     container_name: ifx_postgres_db
     restart: always
     environment:
-      POSTGRES_USER: ${DB_USER:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-admin123}
-      POSTGRES_DB: ${DB_NAME:-vms_db}
+      # Usamos valores fijos para asegurar que el seed y el login no fallen por falta de .env
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: vms_db
     ports:
-      - "5432:5432" # Cambiado a 5432 por defecto para evitar confusiones
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d vms_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   api:
     build: .
     container_name: ifx_nestjs_api
     environment:
-      - DATABASE_URL=postgresql://${DB_USER:-postgres}:${DB_PASSWORD:-admin123}@db:5432/${DB_NAME:-vms_db}?schema=public
-      - JWT_SECRET=${JWT_SECRET:-SuperSecretIFX2024}
-    env_file:
-      - .env
+      # IMPORTANTE: Aquí usamos 'db' que es el nombre del servicio, no 'localhost'
+      - DATABASE_URL=postgresql://postgres:admin123@db:5432/vms_db?schema=public
+      - JWT_SECRET=SuperSecretIFX2024
     ports:
       - "3000:3000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    # Agregamos el comando para que corra todo automáticamente
+    command: sh -c "npx prisma migrate deploy && npx prisma db seed && npm run start:dev"
 
 volumes:
   postgres_data:
