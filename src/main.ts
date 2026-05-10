@@ -14,7 +14,7 @@ async function bootstrap() {
     origin: [
       'http://localhost',      // Puerto 80 (Docker)
       'http://localhost:4200', // Puerto de desarrollo local
-    ], // URL de tu Angular
+    ], 
     credentials: true,
   });
 

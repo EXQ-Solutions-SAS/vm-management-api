@@ -1,4 +1,3 @@
-// src/common/guards/roles.guard.ts
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 
@@ -11,7 +10,6 @@ export class RolesGuard implements CanActivate {
     if (!requiredRoles) return true;
 
     const { user } = context.switchToHttp().getRequest();
-    // Validamos que el rol del usuario esté en los permitidos [cite: 23]
     return requiredRoles.includes(user.role);
   }
 }
