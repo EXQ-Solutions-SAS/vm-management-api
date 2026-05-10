@@ -1,4 +1,3 @@
-// src/vms/entities/vm.entity.ts
 import { VMStatus } from '@prisma/client';
 
 export class VirtualMachine {

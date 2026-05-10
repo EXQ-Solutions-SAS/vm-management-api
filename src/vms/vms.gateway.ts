@@ -1,4 +1,3 @@
-// src/vms/vms.gateway.ts
 import { WebSocketGateway, WebSocketServer, OnGatewayConnection } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 

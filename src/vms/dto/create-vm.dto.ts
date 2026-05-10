@@ -6,16 +6,16 @@ export class CreateVmDto {
 
   @IsInt()
   @Min(1)
-  cores!: number; // Coincide con Prisma
+  cores!: number; 
 
   @IsInt()
   @Min(1)
-  ram!: number;   // Coincide con Prisma
+  ram!: number;   
 
   @IsInt()
   @Min(1)
-  disk!: number;  // Coincide con Prisma
+  disk!: number;  
 
   @IsString()
-  os!: string;    // Obligatorio en Prisma
+  os!: string;   
 }

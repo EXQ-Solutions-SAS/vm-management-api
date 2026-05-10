@@ -1,4 +1,3 @@
-// src/vms/vms.module.ts
 import { Module } from '@nestjs/common';
 import { VmsService } from './vms.service';
 import { VmsController } from './vms.controller';
